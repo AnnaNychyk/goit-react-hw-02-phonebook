@@ -9,22 +9,38 @@ class Phonebook extends Component {
     filter: "",
   };
 
-  handleCreateContact = (contacts) => {
+  handleFilterChange = (event) => {
+    this.setState({ filter: event.target.value });
+  };
+
+  handleCreateContact = (contact) => {
+    const { contacts } = this.state;
+
+    if (
+      contacts.find(
+        ({ name }) => name.toLowerCase() === contact.name.toLowerCase()
+      )
+    ) {
+      return alert(`${contact.name} is already in contacts`);
+    }
+
     this.setState((prevState) => ({
       contacts: [...prevState.contacts, contacts],
     }));
   };
 
-  handleRemoveContact = () => {
-    console.log("");
+  handleRemoveContact = (id) => {
+    this.setState((prevState) => ({
+      contacts: prevState.contacts.filter((contact) => contact.id !== id),
+    }));
   };
 
   handleFilterContacts = () => {
     const { contacts, filter } = this.state;
-  };
 
-  handleFilterChange = (event) => {
-    this.setState({ filter: event.target.value });
+    return contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(filter.trim().toLowerCase())
+    );
   };
 
   render() {
@@ -37,7 +53,7 @@ class Phonebook extends Component {
         <Filter value={this.state.filter} onChange={this.handleFilterChange} />
         <ContactList
           onRemove={this.handleRemoveContact}
-          list={this.state.contacts}
+          list={this.handleFilterContacts()}
         />
       </div>
     );
