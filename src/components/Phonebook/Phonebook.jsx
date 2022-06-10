@@ -10,7 +10,7 @@ class Phonebook extends Component {
   };
 
   handleFilterChange = (event) => {
-    this.setState({ filter: event.target.value });
+    this.setState({ filter: event.currentTarget.value });
   };
 
   handleCreateContact = (contact) => {
@@ -18,7 +18,8 @@ class Phonebook extends Component {
 
     if (
       contacts.find(
-        ({ name }) => name.toLowerCase() === contact.name.toLowerCase()
+        ({ name }) =>
+          name.trim().toLowerCase() === contact.name.trim().toLowerCase()
       )
     ) {
       return alert(`${contact.name} is already in contacts`);
