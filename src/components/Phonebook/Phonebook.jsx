@@ -15,18 +15,17 @@ class Phonebook extends Component {
 
   handleCreateContact = (contact) => {
     const { contacts } = this.state;
+    const isContactExist = contacts.some(
+      ({ name }) =>
+        name.trim().toLowerCase() === contact.name.trim().toLowerCase()
+    );
 
-    if (
-      contacts.find(
-        ({ name }) =>
-          name.trim().toLowerCase() === contact.name.trim().toLowerCase()
-      )
-    ) {
+    if (isContactExist) {
       return alert(`${contact.name} is already in contacts`);
     }
 
     this.setState((prevState) => ({
-      contacts: [...prevState.contacts, contacts],
+      contacts: [...prevState.contacts, contact],
     }));
   };
 
@@ -53,8 +52,8 @@ class Phonebook extends Component {
         <h2>Contacts</h2>
         <Filter value={this.state.filter} onChange={this.handleFilterChange} />
         <ContactList
-          onRemove={this.handleRemoveContact}
           list={this.handleFilterContacts()}
+          onRemove={this.handleRemoveContact}
         />
       </div>
     );
